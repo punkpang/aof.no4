@@ -1,0 +1,197 @@
+def clear():
+    if name == 'nt' :
+        _ = system('cls')
+    else:
+        _ = system('clear')
+#-----------------------------------------------------------------------------------------------------------------------------------
+def menu():
+    clear()
+    print("*" *25)
+    print("*    Behavioe system    *")
+    print("*" *25)
+    print("* 1. Sign In [5]        *")
+    print("* 2. Login [6]          *")
+    print("* 0. Exit program       *")
+    print("*" *25)
+#-----------------------------------------------------------------------------------------------------------------------------------
+def menu1():
+    clear()
+    print("*" *25)
+    print("*    Behavioe system    *")
+    print("*" *25)
+    print("* 1. Insert data        *")
+    print("* 2. Delete data        *")
+    print("* 3. Update data        *")
+    print("* 4. Show data          *")
+    print("* 0. Exit program       *")
+    print("*" *25)
+#-----------------------------------------------------------------------------------------------------------------------------------
+def menu2():
+    #print("\n")
+    print("*" *25)
+    print("*    Behavioe system    *")
+    print("*" *25)
+    print("* 1. Insert data        *")
+    print("* 2. Delete data        *")
+    print("* 3. Update data        *")
+    print("* 4. Show data          *")
+    print("* 0. Exit program       *")
+    print("*" *25)
+#-----------------------------------------------------------------------------------------------------------------------------------
+def signin():
+    clear()
+    print("---------------------------\n--------- Sign In ---------\n---------------------------")
+    name = input("Name-Surname : ")
+    user = input("Username : ")
+    pass1 = input("Password : ")
+    pass2 = input("Confirm Password : ")
+    data_user.append(name+':'+user+':'+pass1+':'+pass2)
+    f = open("User.txt","w")
+    f.write("%s\n"%data_user)
+    menu()
+
+#-----------------------------------------------------------------------------------------------------------------------------------
+def login():
+    clear()
+    f = open("User.txt", "r")
+    print("---------------------------\n---------- LOGIN ----------\n---------------------------")
+    user_in = input("Username : ")
+    pass_in = input("Password : ")
+    for d in f :
+        e = d.strip()
+        e = d.split(':')
+    clear()
+    if user_in in e and pass_in in e :
+        print("Welcome " + e[0]+"']")
+        menu2()
+    else :
+        clear()
+        print("Unknow User or Password")
+        login()
+#-----------------------------------------------------------------------------------------------------------------------------------
+def insert_data():
+    clear()
+    Exit = 'n'
+    while Exit == 'n':
+        clear()
+        print("------------------------------------------------\n--------------- Add Data Student ---------------\n------------------------------------------------")
+        student_id = input("Student ID : ")
+        name_st = input("Name : ")
+        last_st = input("Last : ")
+        nick_st = input("Nickname : ")
+        birth_st = input("Birth Day(dd-mm-yyyy) : ")
+        phone_st = input("Phone Number : ")
+        pointnow_st = '0'
+        print("Score Now :"+pointnow_st)
+        #data_student.append(student_id+':'+name_st+':'+last_st+':'+nick_st+':'+birth_st+':'+phone_st+':'+pointnow_st)
+        information = [name_st, last_st, nick_st, birth_st, phone_st, pointnow_st]
+        database[student_id] = information
+        print(database)
+        save_data()
+        Exit = input("Exit from insert data[y/n]:")
+    else:
+        print("Exit form insert data!")
+        menu1()
+#-----------------------------------------------------------------------------------------------------------------------------------
+def save_data():
+    with open("Data_Student.txt", 'w') as f:
+        for i in database:
+            key = i
+            info = database[i]
+            string = ""
+            string = key + "#"
+            for j in info:
+                string = string + str(j) + "#"
+            f.write(string+'\n')
+#-----------------------------------------------------------------------------------------------------------------------------------
+def scarch_data():
+    clear()
+    print("------------------------------------------------\n---------- Scarch Information Student ----------\n------------------------------------------------")
+    with open("Data_Student.txt", 'r') as f:
+        student_id = input("Student ID : ")
+        for d in f :
+            e=d.split('#')
+        if student_id in e:
+            for x in e :
+                print(x+" : ",end='')
+        print('\n')
+    menu2()
+#-----------------------------------------------------------------------------------------------------------------------------------
+def update_data():
+    clear()
+    print("------------------------------------------------\n-------------- Update Data Student -------------\n------------------------------------------------")
+    student_id = input("Enter the student ID that you want to update : ")
+    if student_id in database:
+        info = database[student_id]
+        choice = input("\nUpdate a new name? [y/n]")
+        if choice == 'y':
+            print("Last Student Name : "+info[0])
+            info[0] = input("Enter new name : ")
+        choice = input("\nUpdate a new Surname? [y/n]")
+        if choice == 'y':
+            print("Last Student Surname : "+info[1])
+            info[1] = input("Enter new Surname : ")
+        choice = input("\nUpdate a new nickname? [y/n]")
+        if choice == 'y':
+            print("Last Student nickname : "+info[2])
+            info[2] = input("Enter new nickname : ")
+        choice = input("\nUpdate a new Birth Day? [y/n]")
+        if choice == 'y':
+            print("Last Student Birth Day : "+info[3])
+            info[3] = input("Enter new Birth Day : ")
+        choice = input("\nUpdate a new Phone number? [y/n]")
+        if choice == 'y':
+            print("Last Student Phone number : "+info[4])
+            info[4] = input("Enter new Phone number : ")
+        choice = input("\nUpdate a edit score? [y/n]")
+        if choice == 'y':
+            print("Last Score : "+info[5])
+        info[5] = int(input("Enter new Brhavioe score : "))
+        database[student_id] = info
+        menu2()
+    else:
+        print(student_id ," not found!")
+        return
+    save_data()
+#-----------------------------------------------------------------------------------------------------------------------------------
+def del_data():
+    clear()
+    print("------------------------------------------------\n---------- Delete Information Student ----------\n------------------------------------------------")
+    student_id = input("Student SID that you want to delete:")
+    if student_id in database:
+        del database[student_id]
+        print("The", student_id, "has been deleted")
+        menu2()
+    else:
+        print(student_id ," not found!")
+        menu2()
+        return
+    save_data()
+#-----------------------------------------------------------------------------------------------------------------------------------
+import os
+from os import system,name
+from time import sleep
+data_user = []
+data_student = []
+database = {}
+menu()
+choice = int(input("Enter your choice ="))
+clear()
+while choice != 0:
+    if choice == 1:
+        insert_data()
+    elif choice == 2:
+        del_data()
+    elif choice == 3:
+        update_data()
+    elif choice == 4:
+        scarch_data()
+    elif choice == 5:
+        signin()
+    elif choice == 6:
+        login()
+    else:
+        print("Your choice was wrong!, plase choose a new one [1-4]")
+    choice = int(input("Enter your choice ="))
+else:
+    print("Program exit!")
